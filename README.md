@@ -2,7 +2,7 @@
 Scripts from GOING WITH THE FLOW: CORALS IN HIGH-FLOW ENVIRONMENTS CAN BEAT THE HEAT
 
 # Transcriptome assembly, annotation and differential gene expression analysis pipeline
-# These scripts were written by Dr. Bastian Bentlage and James Fifer and is a modified version of the pipeline available at https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Differential-Expression
+ These scripts were written by Dr. Bastian Bentlage and James Fifer and is a modified version of the pipeline available at https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Differential-Expression
 
 # Transcriptome assembly
 Step 1) Trim files using Trimmmomatic.sh script. Sequences were trimmed using TRIMMOMATIC (ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:35:-phred33)  (Bolger, Lohse, & Usadel, 2014), which removes low quality nucleotides with bp ≤35 and sequencing adapters, per default settings.
