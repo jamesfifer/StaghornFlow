@@ -20,6 +20,6 @@ Step 6) With this fasta file annotate using the script annotate.sh, blastx again
 
 # Differential gene expression analysis
 
-Step 7) Format sample file according to samples.txt. Use the script DE.sh to create DESeq and edgeR directories. Use results.sh to find intersection between the two differential gene expression analyses and look for candidate genes. 
+Step 7) Format sample file according to samples.txt. Use the script DE.sh to create DESeq and edgeR directories. Use results.sh to find intersection between the two differential gene expression analyses and look for candidate genes. Additionally, to identify significant enrichment of GO terms for the up- and down-regulated genes we conducted a GO analysis using a Fisher’s exact test and rank-based adaptive clustering of GO terms (Wright, Aglyamova, Meyer, & Matz, 2015; https://github.com/z0on/GO_MWU). 
 
 
