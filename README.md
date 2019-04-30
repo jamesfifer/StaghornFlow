@@ -9,7 +9,7 @@ Step 1) Trim files using Trimmmomatic.sh script. Sequences were trimmed using TR
 
 Step 2) Use tophat.sh on trimmed combined fq files. All quality-filtered paired reads were aligned against the publicly available A. digitifera genome (Shinzato et al., 2011), using the splice-junction mapper TopHat2 (Kim et al., 2013). Using the resulting BAM files, a reference transcriptome for A. cf. pulchra was assembled via the genome-guided version of the Trinity transcriptome assembler (Haas et al., 2013), with the A. digitifera genome (Shinzato et al., 2011) as a guide. 
 
-Step 3) Use the parallelBlast.sh to split the fasta into one file per sequence in order to run in parallel. This script blasts against NCBI nt database and retains hits that match scleractinian. This creates a coralcontigs.txt file
+Step 3) Use the parallelBlast.sh to split the fasta into one file per sequence in order to run in parallel. This script blasts against NCBI nt database and retains hits that match scleractinian with an evalue cutoff of 1e-5. This creates a coralcontigs.txt file
 
 Step 4) Filter out contigs from the coralcontigs.txt file with <300bp using the 300bpfilter.sh & contigs_to_fasta.py
 
