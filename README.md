@@ -7,11 +7,11 @@ Scripts from GOING WITH THE FLOW: CORALS IN HIGH-FLOW ENVIRONMENTS CAN BEAT THE 
 # Transcriptome assembly
 Step 1) Trim files using Trimmmomatic.sh script. Sequences were trimmed using TRIMMOMATIC (ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:35:-phred33)  (Bolger, Lohse, & Usadel, 2014), which removes low quality nucleotides with bp ≤35 and sequencing adapters, per default settings.
 
-Step 2) Use tophat.sh on trimmed combined fq files. All quality-filtered paired reads were aligned against the publicly available A. digitifera genome (Shinzato et al., 2011), using the splice-junction mapper TopHat2 (Kim et al., 2013). Using the resulting BAM files, a reference transcriptome for A. cf. pulchra was assembled via the genome-guided version of the Trinity transcriptome assembler (Haas et al., 2013), with the A. digitifera genome (Shinzato et al., 2011) as a guide. 
+Step 2) Use tophat.sh on trimmed combined fq files. All quality-filtered paired reads were aligned against the publicly available A. digitifera genome (Shinzato et al., 2011) and Cladocopium goreaui genome (Liu et al, 2018), using the splice-junction mapper TopHat2 (Kim et al., 2013) . Using the resulting BAM files, two reference transcriptomes, one for A. cf. pulchra and one for Cladocopium sp. were assembled via the genome-guided version of the Trinity transcriptome assembler (Haas et al., 2013), with the A. digitifera genome (Shinzato et al., 2011) or C. goreaui genome (Liu et al, 2018) as a guide. 
 
-Step 3) Use the parallelBlast.sh to split the fasta into one file per sequence in order to run in parallel. This script blasts against NCBI nt database and retains hits that match scleractinian with an evalue cutoff of 1e-5. This creates a coralcontigs.txt file
+Step 3) Use the parallelBlast.sh to split the fasta into one file per sequence in order to run in parallel. This script blasts against NCBI nt database and retains hits that match scleractinian with an evalue cutoff of 1e-5 (for sym blasted against nr databased and retained Dinophyceae hits). This creates a coralcontigs.txt or a symcontigs.txt file
 
-Step 4) Filter out contigs from the coralcontigs.txt file with <300bp using the 300bpfilter.sh & contigs_to_fasta.py
+Step 4) Filter out contigs from the sym or coralcontigs.txt file with <300bp using the 300bpfilter.sh & contigs_to_fasta.py
 
 Step 5) Filter out rRNA with rRNAblast.sh and remove.rRNA.sh.
 
