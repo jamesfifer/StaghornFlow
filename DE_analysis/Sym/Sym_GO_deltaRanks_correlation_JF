@@ -1,0 +1,137 @@
+
+
+####cleaned up function (dirty is below)
+#NSOvsI + BvsD gives negative correlation, when its + AvsC its a positive correlation 
+#
+
+BP_HFNHvsLFNH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_BP_BvsD_GO.csv",header=T) #ambient temp comp
+MF_HFNHvsLFNH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_MF_BvsD_GO.csv",header=T) #ambient temp comp
+CC_HFNHvsLFNH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_CC_BvsD_GO.csv",header=T) #ambient temp comp
+HFNHvsLFNH=rbind(BP_HFNHvsLFNH,MF_HFNHvsLFNH,CC_HFNHvsLFNH)
+
+BP_HFHvsLFH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_BP_AvsC_GO.csv",header=T)
+MF_HFHvsLFH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_MF_AvsC_GO.csv",header=T)
+CC_HFHvsLFH=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/Ex_Situ/MWU_CC_AvsC_GO.csv",header=T)
+HFHvsLFH=rbind(BP_HFHvsLFH,MF_HFHvsLFH,CC_HFHvsLFH)
+
+
+BP_FSvsNS=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_BP_FSvsNS.no_bleached_GO.txt",header=T)
+MF_FSvsNS=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_MF_FSvsNS.no_bleached_GO.txt",header=T)
+CC_FSvsNS=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_CC_FSvsNS.no_bleached_GO.txt",header=T)
+FSvsNS=rbind(BP_FSvsNS,MF_FSvsNS,CC_FSvsNS)
+
+BP_FSvsNS_B=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_BP_FSvsNS.bleached_GO.txt",header=T)
+MF_FSvsNS_B=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_MF_FSvsNS.bleached_GO.txt",header=T)
+CC_FSvsNS_B=read.table("~/Documents/JAMES Broken Computer/Guam/Raymundo/Reanalysis/Sym/In_Situ/MWU_CC_FSvsNS.bleached_GO.txt",header=T)
+FSvsNS_B=rbind(BP_FSvsNS_B,MF_FSvsNS_B,CC_FSvsNS_B)
+
+
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+
+test2=function(a,b) {
+  goods=intersect(a$term,b$term);print(length(goods)); 
+  data1=a[a$term %in% goods,];
+  data2=b[b$term %in% goods,]; 
+  ress=merge(data1,data2,by="term");
+  # GO terms signifcant in both datasets
+  sigs=(ress$p.adj.x<=0.1 & ress$p.adj.y<=0.1);
+  eithersigs=(ress$p.adj.x<=0.1 | ress$p.adj.y<=0.1)
+  EITHERSIGS=ress[eithersigs,]
+  SIGS=ress[sigs,]
+  #shapiro.test(EITHERSIGS$delta.rank.x)
+  #shapiro.test(EITHERSIGS$delta.rank.y)
+  COR=cor.test(EITHERSIGS$delta.rank.x,EITHERSIGS$delta.rank.y,method="pearson")
+  #ress.lm = lm(delta.rank.x ~ delta.rank.y, data=EITHERSIGS);
+  name1 <- deparse(substitute(a));
+  name2<-deparse(substitute(b));
+  plot(delta.rank.x~delta.rank.y,EITHERSIGS,
+       main=paste(name1,"vs",name2),
+       sub=paste("pvalue=",COR[["p.value"]]),
+       xlab="GBM", ylab="GE",mgp=c(2.3,1,0))
+  abline(v=0,lty=3)
+  abline(h=0,lty=3)
+  abline(lm(ress$delta.rank.x ~ ress$delta.rank.y))
+  #ress.lm = lm(delta.rank.x ~ delta.rank.y, data=EITHERSIGS)
+  print(COR);
+  pval=signif(COR[["p.value"]],3);
+  r=signif(COR[["estimate"]],2);
+  ggplot(EITHERSIGS, aes(delta.rank.y, delta.rank.x))+
+    geom_point()+geom_hline(yintercept = 0)+
+    geom_vline(xintercept=0)+
+    stat_smooth(method = "lm", col = "red")+
+    xlab(paste(name2))+ylab(paste(name1))+ggtitle(paste(name1,"vs",name2), subtitle=paste("p=",pval,  "r=",r))+
+    # geom_label_repel(aes(label = SIGS$name.x),
+    #                  box.padding   = 0.15, 
+    #                  point.padding = 1,
+    #                  segment.color = 'blue',data=SIGS, segment.size = 1.0) +
+    theme_classic()+
+    theme(text = element_text(size = 20))
+}
+
+
+COR
+#will show all GO terms and add labels for those significant (.1) in both comparisons
+##rplot plots all GO terms
+##GGplot plots all GO terms plus add labels for GO terms sig in BOTH comparisons
+
+#Comparing ambient HF/LF comparison to in situ heat stress(aka before bleaching) HF/LF
+test2(HFNHvsLFNH, FSvsNS)
+#Comparing heat stress HF/LF comparison to in situ bleaching HF/LF
+test2(HFHvsLFH,FSvsNS_B)
+#Comparing heat stress HF/LF to in situ heat stress
+test2(HFHvsLFH,FSvsNS)
+
+
+
+test=function(a,b) {
+  goods=intersect(a$term,b$term);print(length(goods)); 
+  data1=a[a$term %in% goods,];
+  data2=b[b$term %in% goods,]; 
+  ress=merge(data1,data2,by="term");
+  # GO terms signifcant in both datasets
+  sigs=(ress$p.adj.x<=0.1 & ress$p.adj.y<=0.1);
+  SIGS=ress[sigs,]
+  ress.lm = lm(delta.rank.x ~ delta.rank.y, data=ress);
+  name1 <- deparse(substitute(a));
+  name2<-deparse(substitute(b));
+  plot(delta.rank.x~delta.rank.y,ress,
+       main=paste(name1,"vs",name2),
+       sub=paste("pvalue=",summary(ress.lm)$coefficients[2,4]),
+       xlab="GBM", ylab="GE",mgp=c(2.3,1,0))
+  abline(v=0,lty=3)
+  abline(h=0,lty=3)
+  abline(lm(ress$delta.rank.x ~ ress$delta.rank.y))
+  ress.lm = lm(delta.rank.x ~ delta.rank.y, data=ress)
+  print(summary(ress.lm));
+  ggplot(ress, aes(delta.rank.y, delta.rank.x))+
+    geom_point()+geom_hline(yintercept = 0)+
+    geom_vline(xintercept=0)+
+    stat_smooth(method = "lm", col = "red")+
+    xlab("GBM")+ylab("GE")+ggtitle(paste(name1,"vs",name2), subtitle=paste("pvalue=",summary(ress.lm)$coefficients[2,4]))+
+    geom_label_repel(aes(label = SIGS$name.x),
+                     box.padding   = 0.15, 
+                     point.padding = 1,
+                     segment.color = 'blue',data=SIGS, segment.size = 1.0) +
+    theme_classic()
+  
+}
+
+##rplot plots all GO terms
+##GGplot plots all GO terms plus add labels for GO terms sig in BOTH comparisons
+
+#Comparing ambient HF/LF comparison to in situ heat stress(aka before bleaching) HF/LF
+test2(HFNHvsLFNH, FSvsNS)
+#Comparing heat stress HF/LF comparison to in situ bleaching HF/LF
+test2(HFHvsLFH,FSvsNS_B)
+#Comparing heat stress HF/LF to in situ heat stress
+test2(HFHvsLFH,FSvsNS)
+
+## Looking at within site OvsI 
+test(HFHvsLFH, FSOvsFSI)
+test(HFHvsLFH,NSOvsNSI)
+test(HFNHvsLFNH, FSOvsFSI)
+test(HFNHvsLFNH, NSOvsNSI)
+test(FSOvsFSI,NSOvsNSI)
+ 
