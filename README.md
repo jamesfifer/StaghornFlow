@@ -20,7 +20,7 @@ Step 6) With this fasta file annotate using the script annotate.sh, blastx again
 
 # Differential gene expression analysis
 
-Step 7) Format sample file according to samples.txt. Use the script mapping.sh to create counts files (through RSEM). For all downstream analyses with counts check DE_analysis folder.  
+Step 7) Format sample file according to samples.txt. Use the script mapping.sh to create counts files (through RSEM). For all downstream analyses with counts check https://github.com/jamesfifer/StaghornFlow/tree/master/DE_analysis
 
 # Symbiodiniaceae endosymbiont community pipeline
 
