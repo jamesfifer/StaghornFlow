@@ -439,8 +439,7 @@ write.csv(go_input_BvsD, file="FSvsNS_B_GO.csv", quote=F, row.names=FALSE)
 ###############################################################################################
 ###############################################################################################
 GO=read.table(file="CC_FSvsNS.no_bleached_GO.txt", header=T)
-#pre ribosome up, ribosome down 
-#respiratory 
+
 
 
 
@@ -538,8 +537,7 @@ sigABC=(hmGO[abs(hmGO$value)>1,])
 hm=subset(FSvsNS, rownames(FSvsNS) %in% sigABC$seq)
 
 #stress genes
-#heat shock 90 shows opposite pattern & 110
-GO:0006457
+
 
 stress=ID2gene %>%
   rownames_to_column('gene') %>%
@@ -549,7 +547,6 @@ hmGO=subset(GO, GO$seq %in% rownames(stress))
 sigstress=(hmGO[abs(hmGO$value)>1,])
 hm=subset(FSvsNS, rownames(FSvsNS) %in% sigstress$seq)
 
-#ADD A RIBOSOMAL ONE 
 
 
 annotations <- read.table("FSvsNS_nobleached.txt")
