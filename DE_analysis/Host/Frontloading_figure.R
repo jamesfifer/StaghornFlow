@@ -99,18 +99,15 @@ nrow(CvsD[CvsD$padj<0.05 & CvsD$log2FoldChange > 0 & !is.na(CvsD$padj),])
 UPLFH<-CvsD[CvsD$padj<0.05 & CvsD$log2FoldChange > 0 & !is.na(CvsD$padj),]
 
 #For it to be Barshis's version of frontloading we would need to filter out the genes that
-#were also upregulated in the HFH vs HFNH (although I still think these genes are interesting
-#especially if they for example have 10 counts under LFNH, 50 counts under HFNH and 100 counts under Heat-
-#I think this expression pattern would be 'priming' not 'frontloading', more on that later. 
+#were also upregulated in the HFH vs HFNH but decision seems arbitrary /biasing the results so I didn't end up doing that for this  paper. 
 
 UPHFH<-AvsB[AvsB$padj<0.05 & AvsB$log2FoldChange > 0 & !is.na(AvsB$padj),]
 nrow(UPHFH)
-#Actually ^ I think he didn't filter these out--> WHAT WAS THIS BASED ON?? I CAN'T TELL BASED 
-#ON HIS WRITING...He uses different numbers though in fig 4 than when he talks about exclusive
-#upregulated in MV. Actually in venn diagram he says 136 as exclusive to MVH vs MVcontrol, and
+#He uses different numbers  in fig 4 than when he talks about exclusive
+#upregulated in MV.  in venn diagram he says 136 as exclusive to MVH vs MVcontrol, and
 #in the graph he says 135- I think hes referencing this 136 number though. 
-#Conclusion: remove those that were significantly upregulated between HFH and HFNH
-#option 1 DO EITHER THIS OR OPTION 2 DEPENDING ON WHAT YOU ARE INTERESTED IN 
+#Conclusion: remove those that were significantly upregulated between HFH and HFNH for the traditional Barshis "frontloading" (AKA Option1)
+#option 1 DO EITHER THIS OR OPTION 2 DEPENDING ON WHAT YOU ARE INTERESTED IN (Barshis did option 1 I did option 2)
 
 remove_these <- c(rownames(UPHFH))
 rows_to_remove <- which(row.names(UPLFH) %in% remove_these)
@@ -136,15 +133,15 @@ HFvLFcontrol$FoldChange<- 2^(HFvLFcontrol$log2FoldChange)
 
 #X axis should be these genes and ratio of HFHvsHFNH/LFHvsLFNH
 library(ggplot2)
-poop<-cbind(AvsB$log2FoldChange,CvsD$log2FoldChange)
-rownames(poop)<-rownames(AvsB)
-colnames(poop)<- c("HFHvsHFNH","LFHvsLFNH")
-poop<-data.frame(poop)
-poop$HFHvsHFNHfoldchange<- 2^(poop$HFHvsHFNH)
-poop$LFHvsLFNHfoldchange<- 2^(poop$LFHvsLFNH)
-poop$HFHvLFHfoldchangeratio<-poop$HFHvsHFNHfoldchange/poop$LFHvsLFNHfoldchange
-row_to_keep <- which(row.names(poop) %in% keep_these)
-HFHvHFNH.LFHvLFNHratio<- poop[row_to_keep,]
+woop<-cbind(AvsB$log2FoldChange,CvsD$log2FoldChange)
+rownames(woop)<-rownames(AvsB)
+colnames(woop)<- c("HFHvsHFNH","LFHvsLFNH")
+woop<-data.frame(woop)
+woop$HFHvsHFNHfoldchange<- 2^(woop$HFHvsHFNH)
+woop$LFHvsLFNHfoldchange<- 2^(woop$LFHvsLFNH)
+woop$HFHvLFHfoldchangeratio<-woop$HFHvsHFNHfoldchange/woop$LFHvsLFNHfoldchange
+row_to_keep <- which(row.names(woop) %in% keep_these)
+HFHvHFNH.LFHvLFNHratio<- woop[row_to_keep,]
 plot(HFHvHFNH.LFHvLFNHratio$HFHvLFHfoldchangeratio, HFvLFcontrol$FoldChange, xlim=range(0:2),ylim=range(0:40))+
   abline(v=1,col=3,lty=3)+ abline(h=1, col=3,lty=3)
 
