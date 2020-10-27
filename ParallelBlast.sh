@@ -26,7 +26,7 @@ done
 #remove .out files that did not return hits
 # find . -name '*.out' -size 0 -print0 | xargs -0 rm
 
-# Parse the NCBI Taxonomy to retain only those hits that match Symbiodiniaceae
+# Parse the NCBI Taxonomy to retain only those hits that match Dinophyceae
 for i in ./*out
 do
        if [ -s "$i" ]; then
