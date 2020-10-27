@@ -16,7 +16,7 @@ Step 4) Filter out contigs from the coralcontigs.txt file with <300bp using the 
 Step 5) Filter out rRNA with rRNAblast.sh and remove.rRNA.sh.
 
 # Annotation
-Step 6) With this fasta file annotate using the script annotate.sh, blastx against the uniprot database with desired GO terms. Use script ParseAnnotations.py to only pull cnidarian GO terms from uniprot. Use FilterBLASTxResults.py to filter hits with e values < 1e-5 and Contigs_to_fasta.py to turn these results into fasta file. This creates the final reference transcriptome. 
+Step 6) With this fasta file annotate using the script annotate.sh, blastx against the uniprot database with desired GO terms. Use script ParseAnnotations.py to only pull cnidarian GO terms from uniprot (note this filtering was only done for the host not symbiont due to fewer annotations available for Symbiodiniaceae in Uniprot). Use FilterBLASTxResults.py to filter hits with e values < 1e-5 and Contigs_to_fasta.py to turn these results into fasta file. This creates the final reference transcriptome. 
 
 # Differential gene expression analysis
 
