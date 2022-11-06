@@ -1,5 +1,5 @@
 # StaghornFlow
-Scripts from GOING WITH THE FLOW: CORALS IN HIGH-FLOW ENVIRONMENTS CAN BEAT THE HEAT
+Scripts from Fifer, J., Bentlage, B., Lemer, S., Fujimura, A. G., Sweet, M., & Raymundo, L. J. (2021). Going with the flow: How corals in high‐flow environments can beat the heat. Molecular Ecology, 30(9), 2009-2024. <https://doi.org/10.1111/mec.15869>
 
 # Transcriptome assembly, annotation and differential gene expression analysis pipeline
  These scripts were written by Dr. Bastian Bentlage and James Fifer and is a modified version of the pipeline available at https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Differential-Expression
